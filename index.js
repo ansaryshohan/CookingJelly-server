@@ -14,12 +14,25 @@ const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@clu
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 
 
-client.connect(err => {
-  const collection = client.db("test").collection("devices");
-  // perform actions on the collection object
-  client.close();
-});
+async function run(){
+     const topProductDB= client.db("clientJellyDB").collection("topProducts");
 
+     try{
+
+      app.get('/topproducts',async(req,res)=>{
+          const query={};
+          const products= await topProductDB.find(query).toArray();
+          res.send(products);
+      })
+
+     }
+     catch(err){
+
+     }
+
+}
+
+run().catch(err=>console.log(err));
 
 app.get('/',(req,res)=>{
   res.send({message:'server is running'})
