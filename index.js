@@ -41,27 +41,28 @@ async function run() {
 
     app.get('/singleProduct/:id', async (req, res) => {
       const id = parseInt(req.params.id)
-      // console.log(id);
       const query = { product_id: { $eq: id } }
       const singleProduct = await allSingleProductDB.findOne(query);
-      // console.log(singleProduct)
-      res.send({ data: singleProduct })
+      res.send({message:'true', data: singleProduct });
     })
-    app.post('/review', async(req, res) => {
-      const review = req.body;
-      const result =await allReviewDB.insertOne(review)
-      // res.send(result)
-      // console.log(result)
-    })
-
+    
     app.get('/review/:id',async(req,res)=>{
       const id= req.params.id;
       const query={productId:{$eq: id}}
       const result= await allReviewDB.find(query).toArray();
-      res.send({message:"true",data:result})
-      // console.log(result)
+      res.send({message:"true from id",data:result});
     })
-
+    app.get('/reviewByEmail/:email',async(req,res)=>{
+      const email=req.params.email;
+      const query={email:email}; 
+      const result= await allReviewDB.find(query).toArray();
+      res.send({message:'true from email', data:result});
+    })
+    
+    app.post('/review', async(req, res) => {
+      const review = req.body;
+      const result =await allReviewDB.insertOne(review);
+    })
   }
   catch (err) {
 
