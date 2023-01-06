@@ -61,8 +61,21 @@ async function run() {
     app.get('/reviewUpdate/:id', async (req, res) => {
       const id = req.params.id;
       const query = { _id: ObjectId(id) }
-      const result = await allReviewDB.find(query).toArray();
+      const result =await allReviewDB.findOne(query);
       res.send({ message: "true from update id", data: result });
+     console.log(query)
+    })
+
+    app.put('/reviewUpdate/:id',async(req,res)=>{
+
+      const id= req.params.id;
+      const data = req.body;
+      const query= {_id:ObjectId(id)}
+      const option= {upsert:true}
+      const updatedData= {$set:req.body};
+      const result= await allReviewDB.updateOne(query,updatedData,option)
+      res.send({message:"true", data:result})
+      console.log(result)
     })
 
     app.post('/review', async (req, res) => {
@@ -75,6 +88,7 @@ async function run() {
       const result = await allReviewDB.deleteOne(query);
       res.send({ message: "true from delete", data: result });
     })
+    
   }
   catch (err) {
 
