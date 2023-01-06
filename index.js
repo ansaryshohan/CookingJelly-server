@@ -49,10 +49,17 @@ async function run() {
     })
     app.post('/review', async(req, res) => {
       const review = req.body;
-// console.log(review);
       const result =await allReviewDB.insertOne(review)
       // res.send(result)
-      console.log(result)
+      // console.log(result)
+    })
+
+    app.get('/review/:id',async(req,res)=>{
+      const id= req.params.id;
+      const query={productId:{$eq: id}}
+      const result= await allReviewDB.find(query).toArray();
+      res.send({message:"true",data:result})
+      // console.log(result)
     })
 
   }
