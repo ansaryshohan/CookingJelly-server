@@ -43,31 +43,37 @@ async function run() {
       const id = parseInt(req.params.id)
       const query = { product_id: { $eq: id } }
       const singleProduct = await allSingleProductDB.findOne(query);
-      res.send({message:'true', data: singleProduct });
+      res.send({ message: 'true', data: singleProduct });
     })
-    
-    app.get('/review/:id',async(req,res)=>{
-      const id= req.params.id;
-      const query={productId:{$eq: id}}
-      const result= await allReviewDB.find(query).toArray();
-      res.send({message:"true from id",data:result});
+
+    app.get('/review/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { productId: { $eq: id } }
+      const result = await allReviewDB.find(query).toArray();
+      res.send({ message: "true from id", data: result });
     })
-    app.get('/reviewByEmail/:email',async(req,res)=>{
-      const email=req.params.email;
-      const query={email:email}; 
-      const result= await allReviewDB.find(query).toArray();
-      res.send({message:'true from email', data:result});
+    app.get('/reviewByEmail/:email', async (req, res) => {
+      const email = req.params.email;
+      const query = { email: email };
+      const result = await allReviewDB.find(query).toArray();
+      res.send({ message: 'true from email', data: result });
     })
-    app.get('/reviewUpdate/:id',async(req,res)=>{
-      const id= req.params.id;
-      const query={_id:ObjectId(id)}
-      const result= await allReviewDB.find(query).toArray();
-      res.send({message:"true from update id",data:result});
+    app.get('/reviewUpdate/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) }
+      const result = await allReviewDB.find(query).toArray();
+      res.send({ message: "true from update id", data: result });
     })
-    
-    app.post('/review', async(req, res) => {
+
+    app.post('/review', async (req, res) => {
       const review = req.body;
-      const result =await allReviewDB.insertOne(review);
+      const result = await allReviewDB.insertOne(review);
+    })
+    app.delete('/review/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) }
+      const result = await allReviewDB.deleteOne(query);
+      res.send({ message: "true from delete", data: result });
     })
   }
   catch (err) {
