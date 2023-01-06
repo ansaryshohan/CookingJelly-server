@@ -17,6 +17,7 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 async function run(){
      const topProductDB= client.db("clientJellyDB").collection("topProducts");
      const allProductDB= client.db("clientJellyDB").collection("products");
+     const allSingleProductDB= client.db("clientJellyDB").collection("allProducts");
 
      try{
 
@@ -35,6 +36,15 @@ async function run(){
         const query={};
         const products=await allProductDB.find(query).toArray()
         res.send({message:"true", "data":products})
+      })
+
+      app.get('/singleProduct/:id', async(req,res)=>{
+        const id= parseInt(req.params.id)
+        // console.log(id);
+        const query={product_id: {$eq: id}}
+        const singleProduct= await allSingleProductDB.findOne(query);
+        // console.log(singleProduct)
+        res.send({data:singleProduct})
       })
 
      }
