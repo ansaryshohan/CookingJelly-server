@@ -27,6 +27,11 @@ async function run() {
       const products = await topProductDB.find(query).toArray();
       res.send(products);
     })
+    app.post('/addedTopProducts',async(req,res)=>{
+      const productData= req.body;
+      const result= await topProductDB.insertOne(productData)
+      res.send({message:true, data:result})
+    })
 
     app.get('/topThree', async (req, res) => {
       const products = await topProductDB.find({}).limit(3).toArray();
